@@ -29,4 +29,13 @@ class HariiTest extends PHPUnit_Framework_TestCase {
 	function testClassOfResults() {
 		$this->assertEquals('User', get_class($this->users[0]));
 	}
+	
+	function testFindOne() {
+		$user = User::find(1);
+		$this->assertEquals('hugo', $user->name);
+		$this->assertEquals('User', get_class($user));
+		
+		$user2 = User::find(2);
+		$this->assertEquals('karl marx', $user2->name);
+	}
 }

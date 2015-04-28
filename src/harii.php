@@ -9,6 +9,14 @@ class Harii {
 		self::$_PDO = $configs;
 	}
 	
+	static function make_name() {
+		if (isset($this)) { // if object context
+			return strtolower(get_class($this));
+		} else { // if calling statically
+			return get_called_class();
+		}
+	}
+	
 	static function all() {
 		// store the query globaly, this way you can analyse this
 		// later and/or make tests
@@ -20,7 +28,7 @@ class Harii {
 		foreach ($result as $row) {
 			// create a object of the class
 			$m = new $class_name();
-			// and set the attributs
+			// and set the attributes
 			foreach ($row as $attr=>$value) {
 				$m->$attr = $value;
 			}
@@ -31,11 +39,24 @@ class Harii {
 		return $relation;
 	}
 	
-	static function make_name() {
-		if (isset($this)) { // if object context
-			return strtolower(get_class($this));
-		} else { // if calling statically
-			return get_called_class();
+	// find by id of the record
+	static function find($id) {
+		$_CURRENT_QUERY = "SELECT * FROM " . self::make_name() . " WHERE id = ?;";
+		$stmt = self::$_PDO->prepare($_CURRENT_QUERY);
+		$stmt->bindParam(1, $id);
+		$stmt->execute();
+		
+		$class_name = self::make_name(); // get the class name and strtolower()
+		
+		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+			$m = new $class_name();
+			// and set the attributes
+			foreach ($row as $attr=>$value) {
+				$m->$attr = $value;
+			}
+			return $m; // return in the first member of relation
 		}
 	}
+	
+	
 }
