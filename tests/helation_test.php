@@ -1,20 +1,28 @@
 <?php
 class HelationTest extends PHPUnit_Framework_TestCase {
+	protected $relation;
+	
+	function setUp() {
+		$this->relation =  new Helation(array(1, 3, 5));
+	}
+	
 	function testActLikeArray() {
-		$r = new Helation(array(1, 3, 5));
-		$this->assertEquals(1, $r[0]);
-		$this->assertEquals(3, $r[1]);
-		$this->assertEquals(5, $r[2]);
+		$this->assertEquals(1, $this->relation[0]);
+		$this->assertEquals(3, $this->relation[1]);
+		$this->assertEquals(5, $this->relation[2]);
 	}
 	
 	function testActLikeIterator() {
 		$result = array();
-		$r = new Helation(array(1, 3, 5));
-		foreach ($r as $member) {
+		foreach ($this->relation as $member) {
 			$result[] = $member;
 		}
-		$this->assertEquals(1, $r[0]);
-		$this->assertEquals(3, $r[1]);
-		$this->assertEquals(5, $r[2]);
+		$this->assertEquals(1, $this->relation[0]);
+		$this->assertEquals(3, $this->relation[1]);
+		$this->assertEquals(5, $this->relation[2]);
+	}
+	
+	function testCountableBehavior() {
+		$this->assertEquals(3, count($this->relation));
 	}
 }

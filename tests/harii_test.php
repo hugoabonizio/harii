@@ -4,8 +4,11 @@ class User extends Harii {
 }
 
 class HariiTest extends PHPUnit_Framework_TestCase {
-	function testFirstOfAll() {
+	function setUp() {
 		Harii::configure(new PDO('sqlite:' . realpath(dirname(__FILE__)) . '/db/test.db'));
+	}
+	
+	function testFirstOfAll() {
 		$users = User::all();
 		// 0
 		$this->assertEquals("hugo", $users[0]->name);
@@ -15,5 +18,10 @@ class HariiTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals("karl marx", $users[1]->name);
 		$this->assertEquals("das@kapital.com", $users[1]->email);
 		$this->assertEquals("54321", $users[1]->password);
+	}
+	
+	function testSizeOfResult() {
+		$users = User::all();
+		$this->assertEquals(2, count($users));
 	}
 }
