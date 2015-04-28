@@ -1,4 +1,6 @@
 <?php
+include_once 'helation.php';
+
 class Harii {
 	private static $_PDO;
 	
