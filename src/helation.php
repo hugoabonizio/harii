@@ -1,5 +1,5 @@
 <?php
-class Helation implements ArrayAccess, Iterator {
+class Helation implements ArrayAccess, Iterator, Countable {
 	private $members = array();
 	private $position = 0;
 
@@ -46,5 +46,9 @@ class Helation implements ArrayAccess, Iterator {
 
 	function valid() {
 		return isset($this->members[$this->position]);
+	}
+	
+	function count() {
+		return count($this->members);
 	}
 }
