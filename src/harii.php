@@ -3,10 +3,11 @@ include_once 'helation.php';
 
 class Harii {
 	private static $_PDO;
-	private $_CURRENT_QUERY;
+	public $_CURRENT_QUERY;
 	
 	static function configure($configs) {
 		self::$_PDO = $configs;
+		self::$_PDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 	}
 	
 	static function make_name() {
@@ -56,6 +57,39 @@ class Harii {
 			}
 			return $m; // return in the first member of relation
 		}
+	}
+	
+	// usage example:
+	// User::where("condition = ?", $value1);
+	static function where() {
+		// get parameters dinamically
+		$args = func_get_args();
+		$condition = $args[0];
+		
+		$_CURRENT_QUERY = "SELECT * FROM " . self::make_name() . " WHERE " . $condition . ";";
+		$stmt = self::$_PDO->prepare($_CURRENT_QUERY);
+		// bind parameters passed after condition (first parameter)
+		for ($i = 1; $i < func_num_args(); $i++) {
+			$stmt->bindValue($i, $args[$i]);
+		}
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$members = array();
+		$class_name = self::make_name(); // get the class name and strtolower()
+		
+		foreach ($result as $row) {
+			// create a object of the class
+			$m = new $class_name();
+			// and set the attributes
+			foreach ($row as $attr=>$value) {
+				$m->$attr = $value;
+			}
+			$members[] = $m;
+		}
+		
+		$relation = new Helation($members);
+		return $relation;
 	}
 	
 	
