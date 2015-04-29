@@ -11,7 +11,7 @@ class HariiTest extends PHPUnit_Framework_TestCase {
 		$this->users = User::all();
 	}
 	
-	function testFirstOfAll() {
+	function testReturnAll() {
 		// 0
 		$this->assertEquals("hugo", $this->users[0]->name);
 		$this->assertEquals("hugo_abonizio@hotmail.com", $this->users[0]->email);
