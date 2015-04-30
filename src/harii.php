@@ -7,7 +7,7 @@ class Harii {
 	
 	static function configure($configs) {
 		self::$_PDO = $configs;
-		self::$_PDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+		self::$_PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	
 	static function make_name() {
