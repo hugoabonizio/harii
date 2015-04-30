@@ -5,16 +5,18 @@ class Harii {
 	private static $_PDO;
 	public $_CURRENT_QUERY;
 	
-	static function configure($configs) {
-		self::$_PDO = $configs;
-		self::$_PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	static function configure($pdo, $configs = array('enviroment' => 'development')) {
+		self::$_PDO = $pdo;
+		if (isset($configs['enviroment']) && $configs['enviroment'] != 'production') {
+			self::$_PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		}
 	}
 	
 	static function make_name() {
 		if (isset($this)) { // if object context
 			return strtolower(get_class($this));
 		} else { // if calling statically
-			return get_called_class();
+			return strtolower(get_called_class());
 		}
 	}
 	
