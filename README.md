@@ -32,12 +32,12 @@ $cheap_toys = Product::where('category = :category AND price < :price', array(
 
 ### Manipulate
 ```php
-$user = User.create(array(
+$user = User::create(array(
 	'name' => 'Hugo',
 	'age' => 21
 ));
 
-$user = User.find($_GET['id']);
+$user = User::find($_GET['id']);
 $user->name = 'New Name';
 $user->save();
 ```
