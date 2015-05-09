@@ -1,16 +1,16 @@
 <?php
 // example class
-class User extends Harii {	
+class User extends \Harii\Harii {	
 }
 
-class Comment extends Harii {
+class Comment extends \Harii\Harii {
 }
 
-class HariiTest extends PHPUnit_Framework_TestCase {
+class HariiTest extends \PHPUnit_Framework_TestCase {
 	protected $users;
 	
 	function setUp() {
-		Harii::configure(new PDO('sqlite:' . realpath(dirname(__FILE__)) . '/db/test.db'));
+		\Harii\Harii::configure(new \PDO('sqlite:' . realpath(dirname(__FILE__)) . '/db/test.db'));
 		$this->users = User::all();
 	}
 	
@@ -45,7 +45,7 @@ class HariiTest extends PHPUnit_Framework_TestCase {
 	function testWhere() {
 		$user_comments = Comment::where("user_id = ? AND id > ?", 1, 0);
 
-		$this->assertEquals('Helation', get_class($user_comments));
+		$this->assertEquals('Harii\Relation', get_class($user_comments));
 		$this->assertEquals(2, count($user_comments));
 		$this->assertEquals('hugos comment', $user_comments[0]->comment);
 		$this->assertEquals('second hugos comment', $user_comments[1]->comment);

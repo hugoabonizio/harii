@@ -1,9 +1,9 @@
 <?php
-class HelationTest extends PHPUnit_Framework_TestCase {
+class RelationTest extends PHPUnit_Framework_TestCase {
 	protected $relation;
 	
 	function setUp() {
-		$this->relation =  new Helation(array(1, 3, 5));
+		$this->relation =  new \Harii\Relation(array(1, 3, 5));
 	}
 	
 	function testActLikeArray() {

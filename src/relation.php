@@ -1,5 +1,7 @@
 <?php
-class Helation implements ArrayAccess, Iterator, Countable {
+namespace Harii;
+
+class Relation implements \ArrayAccess, \Iterator, \Countable {
 	private $members = array();
 	private $position = 0;
 

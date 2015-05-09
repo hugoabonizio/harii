@@ -1,5 +1,6 @@
 <?php
-include_once 'helation.php';
+namespace Harii;
+include_once 'relation.php';
 
 class Harii {
 	private static $_PDO;
@@ -8,23 +9,25 @@ class Harii {
 	static function configure($pdo, $configs = array('enviroment' => 'development')) {
 		self::$_PDO = $pdo;
 		if (isset($configs['enviroment']) && $configs['enviroment'] != 'production') {
-			self::$_PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			self::$_PDO->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		}
 	}
 	
 	static function make_name() {
 		if (isset($this)) { // if object context
-			return strtolower(get_class($this));
+			$name = get_class($this);
 		} else { // if calling statically
-			return strtolower(get_called_class());
+			$name = get_called_class();
 		}
+		$name = explode("\\", $name);
+		return strtolower($name[count($name) - 1]);
 	}
 	
 	static function all() {
 		// store the query globaly, this way you can analyse this
 		// later and/or make tests
 		$_CURRENT_QUERY = "SELECT * FROM " . self::make_name() . ";";
-		$result = self::$_PDO->query($_CURRENT_QUERY)->fetchAll(PDO::FETCH_ASSOC);
+		$result = self::$_PDO->query($_CURRENT_QUERY)->fetchAll(\PDO::FETCH_ASSOC);
 		$members = array();
 		$class_name = self::make_name(); // get the class name and strtolower()
 		
@@ -38,7 +41,7 @@ class Harii {
 			$members[] = $m;
 		}
 		
-		$relation = new Helation($members);
+		$relation = new Relation($members);
 		return $relation;
 	}
 	
@@ -51,7 +54,7 @@ class Harii {
 		
 		$class_name = self::make_name(); // get the class name and strtolower()
 		
-		foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+		foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
 			$m = new $class_name();
 			// and set the attributes
 			foreach ($row as $attr=>$value) {
@@ -76,7 +79,7 @@ class Harii {
 		}
 		$stmt->execute();
 		
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 		$members = array();
 		$class_name = self::make_name(); // get the class name and strtolower()
 		
@@ -90,7 +93,7 @@ class Harii {
 			$members[] = $m;
 		}
 		
-		$relation = new Helation($members);
+		$relation = new Relation($members);
 		return $relation;
 	}
 	
