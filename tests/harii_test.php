@@ -1,9 +1,9 @@
 <?php
 // example class
-class User extends \Harii\Harii {	
+class User extends \Harii\Model {	
 }
 
-class Comment extends \Harii\Harii {
+class Comment extends \Harii\Model {
 }
 
 class HariiTest extends \PHPUnit_Framework_TestCase {

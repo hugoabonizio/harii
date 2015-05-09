@@ -5,7 +5,7 @@ Hugo's ActiveRecord Inspired Implementation
 
 ### Definition
 ```php
-class Product extends Harii {
+class Product extends \Harii\Model {
 	public $price, $name, $description;
 }
 ```
@@ -44,7 +44,7 @@ $user->save();
 
 ### Validations
 ```php
-class User extends Harii {
+class User extends \Harii\Model {
 	public $user, $email, $password;
 	
 	// validates required field and only letters

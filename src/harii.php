@@ -1,6 +1,7 @@
 <?php
 namespace Harii;
 include_once 'relation.php';
+include_once 'model.php';
 
 class Harii {
 	private static $_PDO;
