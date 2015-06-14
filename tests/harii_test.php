@@ -40,6 +40,9 @@ class HariiTest extends \PHPUnit_Framework_TestCase {
 		
 		$user2 = User::find(2);
 		$this->assertEquals('karl marx', $user2->name);
+		
+		$fake_user = User::find(66);
+		$this->assertEquals(null, $fake_user);
 	}
 	
 	function testWhere() {

@@ -24,7 +24,7 @@ echo "$" . $product->price;
 
 // where filter
 $toys = Product::where('category = ?', 'Toys');
-$cheap_toys = Product::where('category = :category AND price < :price', array(
+$cheap_toys = Product::where('category = :category AND price < :price', array( // TODO
 	'category' => 'Toys',
 	'price' => 10.99
 ));

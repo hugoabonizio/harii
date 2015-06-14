@@ -2,9 +2,10 @@
 namespace Harii;
 include_once 'relation.php';
 include_once 'model.php';
+include_once 'selector.php';
 
 class Harii {
-	private static $_PDO;
+	public static $_PDO;
 	public $_CURRENT_QUERY;
 	
 	static function configure($pdo, $configs = array('enviroment' => 'development')) {
@@ -24,77 +25,34 @@ class Harii {
 		return strtolower($name[count($name) - 1]);
 	}
 	
-	static function all() {
-		// store the query globaly, this way you can analyse this
-		// later and/or make tests
-		$_CURRENT_QUERY = "SELECT * FROM " . self::make_name() . ";";
-		$result = self::$_PDO->query($_CURRENT_QUERY)->fetchAll(\PDO::FETCH_ASSOC);
-		$members = array();
-		$class_name = self::make_name(); // get the class name and strtolower()
-		
-		foreach ($result as $row) {
-			// create a object of the class
-			$m = new $class_name();
-			// and set the attributes
-			foreach ($row as $attr=>$value) {
-				$m->$attr = $value;
-			}
-			$members[] = $m;
-		}
-		
-		$relation = new Relation($members);
-		return $relation;
-	}
+	
 	
 	// find by id of the record
 	static function find($id) {
-		$_CURRENT_QUERY = "SELECT * FROM " . self::make_name() . " WHERE id = ?;";
-		$stmt = self::$_PDO->prepare($_CURRENT_QUERY);
-		$stmt->bindParam(1, $id);
-		$stmt->execute();
-		
-		$class_name = self::make_name(); // get the class name and strtolower()
-		
-		foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-			$m = new $class_name();
-			// and set the attributes
-			foreach ($row as $attr=>$value) {
-				$m->$attr = $value;
-			}
-			return $m; // return in the first member of relation
-		}
+		$result = self::where("id = ?", $id);
+		if (count($result))
+			return $result[0];
+		else
+			return null;
+	}
+	
+	static function all() {
+		return self::where();
 	}
 	
 	// usage example:
 	// User::where("condition = ?", $value1);
 	static function where() {
+		$selector = new Selector(self::$_PDO, self::make_name());
+		
 		// get parameters dinamically
 		$args = func_get_args();
-		$condition = $args[0];
+		if (func_num_args())
+			$result = $selector->select($args[0], array_slice($args, 1))->get();
+		else
+			$result = $selector->select()->get();
 		
-		$_CURRENT_QUERY = "SELECT * FROM " . self::make_name() . " WHERE " . $condition . ";";
-		$stmt = self::$_PDO->prepare($_CURRENT_QUERY);
-		// bind parameters passed after condition (first parameter)
-		for ($i = 1; $i < func_num_args(); $i++) {
-			$stmt->bindValue($i, $args[$i]);
-		}
-		$stmt->execute();
-		
-		$result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-		$members = array();
-		$class_name = self::make_name(); // get the class name and strtolower()
-		
-		foreach ($result as $row) {
-			// create a object of the class
-			$m = new $class_name();
-			// and set the attributes
-			foreach ($row as $attr=>$value) {
-				$m->$attr = $value;
-			}
-			$members[] = $m;
-		}
-		
-		$relation = new Relation($members);
+		$relation = new Relation($result);
 		return $relation;
 	}
 	
