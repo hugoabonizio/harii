@@ -53,4 +53,15 @@ class HariiTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('hugos comment', $user_comments[0]->comment);
 		$this->assertEquals('second hugos comment', $user_comments[1]->comment);
 	}
+	
+	function testNamedWhere() {
+		$user_comments = Comment::where("user_id = :user AND id > :id", array(
+			'user' => 1,
+			'id' => 0
+		));
+
+		$this->assertEquals(2, count($user_comments));
+		$this->assertEquals('hugos comment', $user_comments[0]->comment);
+		$this->assertEquals('second hugos comment', $user_comments[1]->comment);
+	}
 }

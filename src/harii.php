@@ -47,10 +47,16 @@ class Harii {
 		
 		// get parameters dinamically
 		$args = func_get_args();
-		if (func_num_args())
-			$result = $selector->select($args[0], array_slice($args, 1))->get();
-		else
+		if (func_num_args()) {
+			if (is_array(array_slice($args, 1)[0])) // pass array as array('username' => 'hugo')
+				$params = array_slice($args, 1)[0];
+			else
+				$params = array_slice($args, 1);
+			
+			$result = $selector->select($args[0], $params)->get();
+		} else {
 			$result = $selector->select()->get();
+		}
 		
 		$relation = new Relation($result);
 		return $relation;
