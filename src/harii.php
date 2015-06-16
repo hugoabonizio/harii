@@ -72,6 +72,7 @@ class Harii {
 		$class_name = self::make_name();
 		$inserter = new Inserter(self::$_PDO, $class_name);
 		$attrs['id'] = $inserter->values($attrs)->save();
+		$attrs['new_record'] = false;
 		return new $class_name($attrs);
 	}
 	

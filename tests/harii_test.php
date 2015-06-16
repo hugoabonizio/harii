@@ -19,6 +19,7 @@ class HariiTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals("hugo", $this->users[0]->name);
 		$this->assertEquals("hugo_abonizio@hotmail.com", $this->users[0]->email);
 		$this->assertEquals("12345", $this->users[0]->password);
+		$this->assertEquals(false, $this->users[0]->new_record);
 		// 1
 		$this->assertEquals("karl marx", $this->users[1]->name);
 		$this->assertEquals("das@kapital.com", $this->users[1]->email);
@@ -40,6 +41,7 @@ class HariiTest extends \PHPUnit_Framework_TestCase {
 		
 		$user2 = User::find(2);
 		$this->assertEquals('karl marx', $user2->name);
+		$this->assertEquals(false, $user2->new_record);
 		
 		$fake_user = User::find(66);
 		$this->assertEquals(null, $fake_user);

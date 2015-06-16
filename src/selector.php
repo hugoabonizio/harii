@@ -47,7 +47,7 @@ class Selector extends SQLHelper {
 		
 		foreach ($this->stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
 			// create a object of the class
-			$m = new $this->class_name();
+			$m = new $this->class_name(array('new_record' => false));
 			// and set the attributes
 			foreach ($row as $attr=>$value) {
 				$m->$attr = $value;

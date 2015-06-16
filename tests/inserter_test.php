@@ -29,6 +29,7 @@ class InserterTest extends \PHPUnit_Framework_TestCase {
 		$select = User::where(array('name' => 'user name ' . $rand));
 		
 		$this->assertEquals('user name ' . $rand, $user->name); // return a User object
+		$this->assertEquals(false, $user->new_record);
 		$this->assertEquals(true, is_numeric($user->id)); // return inserted id
 		$this->assertEquals('email_' . $rand . '@email.com', $select->first()->email);
 		

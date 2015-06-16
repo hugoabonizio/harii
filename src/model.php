@@ -3,6 +3,8 @@ namespace Harii;
 
 class Model extends Harii {
 	public $primary_key = 'id';
+	public $destroyed = false;
+	public $new_record = true;
 	
 	function __construct($attrs = array()) {
 		$this->update_attributes($attrs);
