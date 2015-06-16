@@ -3,6 +3,7 @@ namespace Harii;
 include_once 'relation.php';
 include_once 'model.php';
 include_once 'selector.php';
+include_once 'inserter.php';
 
 class Harii {
 	public static $_PDO;
