@@ -2,6 +2,8 @@
 namespace Harii;
 
 class Model extends Harii {
+	public $primary_key = 'id';
+	
 	function __construct($attrs = array()) {
 		$this->update_attributes($attrs);
 	}

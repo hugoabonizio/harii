@@ -49,10 +49,15 @@ class Harii {
 		// get parameters dinamically
 		$args = func_get_args();
 		if (func_num_args()) {
-			if (is_array(array_slice($args, 1)[0])) // pass array as array('username' => 'hugo')
-				$params = array_slice($args, 1)[0];
-			else
-				$params = array_slice($args, 1);
+			if (is_array($args[0])) {// pass just array as array('username' => 'hugo')
+				$params = $args[0];
+			} elseif (is_string($args[0])) { // "condition", values...
+				if (func_num_args() == 2 and is_array($args[1])) {
+					$params = array_slice($args, 1)[0];
+				} else {
+					$params = array_slice($args, 1);
+				}
+			}
 			
 			$result = $selector->select($args[0], $params)->get();
 		} else {
@@ -61,6 +66,13 @@ class Harii {
 		
 		$relation = new Relation($result);
 		return $relation;
+	}
+	
+	static function create($attrs) {
+		$class_name = self::make_name();
+		$inserter = new Inserter(self::$_PDO, $class_name);
+		$attrs['id'] = $inserter->values($attrs)->save();
+		return new $class_name($attrs);
 	}
 	
 	

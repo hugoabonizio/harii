@@ -16,11 +16,19 @@ class Selector extends SQLHelper {
 	}
 	
 	function select($conditions = null, $values = null) {
-		if ($conditions) {// else continues to be 1 = 1
+		if (is_string($conditions)) { // else continues to be 1 = 1
 			$this->where = $conditions;
+		} elseif (is_array($conditions)) { // pass just an array
+			$wheres = array();
+			foreach ($conditions as $column => $value) {
+				$wheres[] = $column . ' = ?';
+			}
+			$where = implode(', ', $wheres);
+			return $this->select($where, array_values($conditions));
 		}
 		
 		$this->query .= " WHERE " . $this->where;
+		
 		$this->stmt = $this->pdo->prepare($this->query);
 		
 		// bind parameters passed after condition (first parameter)
