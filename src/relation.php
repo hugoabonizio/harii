@@ -53,4 +53,12 @@ class Relation implements \ArrayAccess, \Iterator, \Countable {
 	function count() {
 		return count($this->members);
 	}
+	
+	function first() {
+		return $this->members[0];
+	}
+	
+	function last() {
+		return $this->members[count($this->members) - 1];
+	}
 }

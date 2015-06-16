@@ -25,4 +25,9 @@ class RelationTest extends PHPUnit_Framework_TestCase {
 	function testCountableBehavior() {
 		$this->assertEquals(3, count($this->relation));
 	}
+	
+	function testHelpers() {
+		$this->assertEquals(1, $this->relation->first());
+		$this->assertEquals(5, $this->relation->last());
+	}
 }
