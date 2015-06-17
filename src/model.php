@@ -15,4 +15,16 @@ class Model extends Harii {
 			$this->$attr = $value;
 		}
 	}
+	
+	function save() {
+		if ($this->new_record) {
+			// INSERT
+			$inserter = new Inserter(self::$_PDO, self::make_name());
+			$this->id = $insert->values(get_class_vars(get_class($this)))->save();
+			$this->new_record = false;
+			return $this;
+		} else {
+			// UPDATE
+		}
+	}
 }

@@ -23,4 +23,8 @@ class HariiTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('a', $m2->attr1);
 		$this->assertEquals(null, $m2->attr2);
 	}
+	
+	function testSaveNewRecord() {
+		$user = new ModelTest();
+	}
 }
